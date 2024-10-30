@@ -1,0 +1,187 @@
+{% load static %}
+<!DOCTYPE html> 
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Admin Panel</title>
+  <link rel="stylesheet" href="{% static 'css/adminpage.css' %}">
+</head>
+
+<body>
+  <div class="sidebar">
+    <div class="logo">
+      Cheradel Suites
+    </div>
+    <ul class="menu">
+      <li><a href="/">Dashboard</a></li>
+      <li><a href="{% url 'reservation:customers' %}">Customer List</a></li>
+      <li><a href="{% url 'reservation:services_list_admin' %}">Services</a></li>
+      <li><a href="{% url 'reservation:reservation_list' %}">Reservation List</a></li>
+      <li><a href="{% url 'reservation:transaction_history' %}">Transaction History</a></li>
+      <li><a href="{% url 'reservation:report_list_admin' %}">Reports</a></li>
+      <li><a href="{% url 'account_logout' %}">Logout</a></li>
+    </ul>
+  </div>
+  <div class="content">
+    <div class="header">
+        <h1></h1>
+    </div>
+    <div class="main">
+        <div class="con">
+            <div class="main">
+                <h1>Add Service</h1>
+           <form method="post">
+               {% csrf_token %}
+               {{ form.as_p }}
+               <button type="submit" class="btn btn-primary">Submit</button>
+               <button class="home-button"><a href="/services">Back to Services</a></button>
+           </form>
+                 
+             </div>
+        </div>
+        
+    </div>
+</div>
+
+  <style>
+    body, h1, h2, h3, p, ul, li, table {
+margin: 0;
+padding: 0;
+}
+
+/* Body styling */
+body {
+font-family: Arial, sans-serif;
+background-color: #f9f9f9;
+
+}
+
+/* Navigation styling */
+.nav {
+background-color: #333;
+color: #fff;
+padding: 20px;
+text-align: center;
+}
+
+.nav h1 {
+font-size: 24px;
+margin-bottom: 10px;
+}
+
+.nav a {
+color: #fff;
+text-decoration: none;
+margin-right: 20px;
+}
+
+/* Content styling */
+.con {
+padding: 20px;
+}
+h1 {
+            text-align: center;
+            margin-top: 50px;
+            color: #333;
+        }
+
+        form {
+            max-width: 400px;
+            margin: 20px auto;
+            padding: 20px;
+            background-color: #fff;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        label {
+            display: block;
+            font-weight: bold;
+            margin-bottom: 5px;
+        }
+
+        input[type="text"],
+        textarea {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            box-sizing: border-box;
+        }
+
+        textarea {
+            height: 200px; /* Adjust the height as needed */
+        }
+
+        input[type="submit"] {
+            width: auto; /* Reset the width for submit button */
+            background-color: #007bff;
+            color: #fff;
+            font-weight: bold;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+
+        input[type="submit"]:hover {
+            background-color: #0056b3;
+        }
+        .home-button {
+    display: inline-block;
+    background-color: #007bff;
+    color: #fff;
+    border: none;
+    border-radius: 4px;
+    padding: 10px 20px;
+    cursor: pointer;
+    text-decoration: none; /* Remove underline from anchor tag */
+}
+
+.home-button:hover {
+    background-color: #0056b3;
+    /* Darken background color on hover */
+}
+
+.home-button:focus {
+    outline: none;
+    /* Remove default focus outline */
+}
+
+.home-button a {
+    text-decoration: none;
+    color: inherit; /* Inherit color from parent */
+}
+.btn-primary {
+    display: inline-block;
+    padding: 10px 20px;
+    background-color: #007bff;
+    color: #fff;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+    text-decoration: none; /* Remove underline */
+}
+
+.btn-primary:hover {
+    background-color: #0056b3;
+    /* Darken background color on hover */
+}
+
+.btn-primary:focus {
+    outline: none;
+    /* Remove default focus outline */
+}
+
+.btn-primary:active {
+    transform: translateY(1px);
+    /* Add slight downward movement on click */
+}
+ </style>
+
+</body>
+</html>

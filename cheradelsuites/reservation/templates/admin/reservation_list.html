@@ -1,0 +1,285 @@
+{% load static %}
+<!DOCTYPE html> 
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Admin Panel</title>
+  <link rel="stylesheet" href="{% static 'css/adminpage.css' %}">
+</head>
+
+<style>
+    body {
+                font-family: Arial, sans-serif;
+                margin: 0;
+                padding: 0;
+                background-color: #f9f9f9;
+            }
+            h1 {
+                text-align: center;
+                margin-top: 20px;
+                color: #333333;
+            }
+            table {
+                width: 100%;
+                margin: 20px auto;
+                border-collapse: collapse;
+                box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+                background-color: #ffffff;
+            }
+            th, td {
+                padding: 12px 15px;
+                text-align: left;
+                border-bottom: 1px solid #dddddd;
+            }
+            th {
+                background-color: #f2f2f2;
+                color: #333333;
+            }
+            tr:hover {
+                background-color: #f5f5f5;
+            }
+            .popup {
+    display: none;
+    position: fixed;
+    z-index: 1;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    overflow: auto;
+    background-color: rgba(0, 0, 0, 0.5);
+}
+
+.popup-content {
+    background-color: #fefefe;
+    margin: 10% auto;
+    padding: 20px;
+    border: 1px solid #888;
+    width: 80%;
+    max-width: 1500px;
+}
+
+.close {
+    color: #aaa;
+    float: right;
+    font-size: 28px;
+    font-weight: bold;
+}
+
+.close:hover,
+.close:focus {
+    color: black;
+    text-decoration: none;
+    cursor: pointer;
+}
+
+/* Style for buttons */
+.button {
+    background-color: #787e78;
+    border: none;
+    color: white;
+    padding: 10px 20px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 16px;
+    margin: 4px 2px;
+    cursor: pointer;
+    border-radius: 4px;
+}
+
+.button:hover {
+    background-color: #45a049;
+}
+.button-container {
+    text-align: center;
+}
+    </style>
+
+<body>
+  <div class="sidebar">
+    <div class="logo">
+     Cheradel Suites
+    </div>
+    <ul class="menu">
+      <li><a href="#">Dashboard</a></li>
+      <li><a href="{% url 'reservation:customers' %}">Customer List</a></li>
+      <li><a href="{% url 'reservation:services_list_admin' %}">Services</a></li>
+      <li><a href="{% url 'reservation:reservation_list' %}">Reservation List</a></li>
+      <li><a href="{% url 'reservation:transaction_history' %}">Transaction History</a></li>
+      <li><a href="{% url 'reservation:report_list_admin' %}">Reports</a></li>
+      <li><a href="{% url 'account_logout' %}">Logout</a></li>
+    </ul>
+  </div>
+  <div class="content">
+    <div class="header">
+      <h1></h1>
+    </div>
+    <div class="main">
+        <h1>Reservation List</h1>
+        <table>
+            <thead>
+                <tr>
+                    <th>Reservation ID</th>
+                    <th>Username</th>
+                    <th>Full Name</th>
+                    <th>Phone number</th>   
+                    <th>Service</th>
+                    <th>Date</th>
+                    <th>Confirmation</th>
+                    <th>Status</th>
+                    <!-- Add additional table headers for other reservation details -->
+                </tr>
+            </thead>
+            <tbody>
+                {% for reservation in pending_reservations %}
+                <tr>
+                    <td>{{ reservation.id }}</td>
+                    <td>{{ reservation.user.username }}</td>
+                    <td>{{ reservation.first_name }} {{ reservation.last_name }}</td>
+                    <td>{{ reservation.phone_number }}</td>
+                    <td>{{ reservation.service }}</td>  
+                    <td>{{ reservation.date }}</td>
+                    
+                    <td>
+                        <form action="{% url 'reservation:update_status' reservation.id %}" method="post">
+                            {% csrf_token %}
+                            <select name="status">
+                                <option value="approved" {% if reservation.status == 'approved' %} selected {% endif %}>Approved</option>
+                                <option value="pending" {% if reservation.status == 'pending' %} selected {% endif %}>Pending</option>
+                                <option value="declined" {% if reservation.status == 'declined' %} selected {% endif %}>Declined</option>
+                            </select>
+                            <input type="submit" value="Update">
+                        </form>
+                    </td> 
+                    <td>{{ reservation.status }}</td>
+                    <td>
+                    
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+
+
+   
+    <div class="button-container">
+        <!-- Button to display approved reservations -->
+        <button class="button" onclick="showPopup('approvedReservations')">View Approved Reservations</button>
+    
+        <!-- Button to display declined reservations -->
+        <button class="button" onclick="showPopup('declinedReservations')">View Declined Reservations</button>
+    </div>
+
+    <!-- Pop-up for approved reservations -->
+    <div id="approvedReservations" class="popup">
+        <div class="popup-content">
+            <span class="close" onclick="closePopup('approvedReservations')">&times;</span>
+            <h2>Approved Reservations</h2>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Reservation ID</th>
+                        <th>Username</th>
+                        <th>Full Name</th>
+                        <th>Phone number</th>   
+                        <th>Service</th>
+                        <th>Date</th>
+                        <th>Reservation Status</th>
+                        <th>Transaction Details</th>
+                        <!-- Add additional table headers for other reservation details -->
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for reservation in approved_reservations %}
+                    <tr>
+                        <td>{{ reservation.id }}</td>
+                        <td>{{ reservation.user.username }}</td>
+                        <td>{{ reservation.first_name }} {{ reservation.last_name }}</td>
+                        <td>{{ reservation.phone_number }}</td>
+                        <td>{{ reservation.service }}</td>  
+                        <td>{{ reservation.date }}</td>
+                        <td>{{ reservation.status }}</td>
+                        <td>
+                            {% for transaction in all_transactions %}
+                    {% if transaction.reservation_id == reservation.id %}
+                        Transaction ID: {{ transaction.id }}<br>
+                        Title: {{ transaction.title }}<br>
+                    {% endif %}
+                {% endfor %}
+                            </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <!-- Pop-up for declined reservations -->
+    <div id="declinedReservations" class="popup">
+        <div class="popup-content">
+            <span class="close" onclick="closePopup('declinedReservations')">&times;</span>
+            <h2>Declined Reservations</h2>
+            <table>
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Username</th>
+                        <th>Full Name</th>
+                        <th>Phone number</th>   
+                        <th>Service</th>
+                        <th>Date</th>
+                        <th>Status</th>
+                        <!-- Add additional table headers for other reservation details -->
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for reservation in declined_reservations %}
+                    <tr>
+                        <td>{{ reservation.id }}</td>
+                        <td>{{ reservation.user.username }}</td>
+                        <td>{{ reservation.first_name }} {{ reservation.last_name }}</td>
+                        <td>{{ reservation.phone_number }}</td>
+                        <td>{{ reservation.service }}</td>  
+                        <td>{{ reservation.date }}</td>
+                        <td>{{ reservation.status }}</td>
+                        <td>
+                        
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <!-- Main reservation table -->
+    <table>
+        <!-- Table headers -->
+        <tbody>
+            {% for reservation in all_reservations %}
+            <tr>
+                <!-- Reservation details -->
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+
+  </div>
+
+  <script>
+    // JavaScript functions to show and hide pop-up
+    function showPopup(popupId) {
+        document.getElementById(popupId).style.display = "block";
+    }
+
+    function closePopup(popupId) {
+        document.getElementById(popupId).style.display = "none";
+    }
+</script>
+
+
+</body>
+</html>

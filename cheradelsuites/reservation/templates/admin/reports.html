@@ -1,0 +1,198 @@
+{% load static %}
+<!DOCTYPE html> 
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Admin Panel</title>
+  <link rel="stylesheet" href="{% static 'css/adminpage.css' %}">
+</head>
+<body>
+  <div class="sidebar">
+    <div class="logo">
+      Cheradel Suites
+    </div>
+    <ul class="menu">
+      <li><a href="/">Dashboard</a></li>
+      <li><a href="{% url 'reservation:customers' %}">Customer List</a></li>
+      <li><a href="{% url 'reservation:services_list_admin' %}">Services</a></li>
+      <li><a href="{% url 'reservation:reservation_list' %}">Reservation List</a></li>
+      <li><a href="{% url 'reservation:transaction_history' %}">Transaction History</a></li>
+      <li><a href="{% url 'reservation:report_list_admin' %}">Reports</a></li>
+      <li><a href="{% url 'account_logout' %}">Logout</a></li>
+    </ul>
+  </div>
+  <div class="content">
+    <div class="header">
+      <h1></h1>
+    </div>
+    <div class="main">
+      <h1>Reports</h1>
+      <div class="box">
+        <img src="{% static 'images/user.png' %}">
+          <p>Total Users: {{ total_user }}</p>
+          <a href="{% url 'reservation:customers' %}">View All</a>
+      </div>
+      <div class="box">
+          <p>Total Reservations: {{ total_reservation }}</p>
+          <p>Pending: {{ pending_count }}</p>
+          <p>Approved: {{ approved_count }}</p>
+          <p>Declined: {{ declined_count }}</p>
+          <a href="{% url 'reservation:reservation_list' %}">View All</a>
+      </div>
+      <div class="box">
+          <p>Total Services: {{ total_package }}</p>
+          <a href="{% url 'reservation:services_list_admin' %}">VIew All</a>
+      </div>
+    
+      <div class="box">
+        <p>Total Transactions: {{ total_transactions }}</p>
+        <a href="{% url 'reservation:transaction_history' %}">VIew All</a>
+    </div>
+  </div>
+
+  <h1 class="report-title">Search Reservations by Date</h1>
+
+<form class="search-form" method="get" action="">
+    <label class="search-label" for="date">Select Date:</label>
+    <input class="search-input" type="date" id="date" name="date" value="{{ search_date }}">
+    <button class="search-button" type="submit">Search</button>
+</form>
+
+{% if reservations %}
+    <h2 class="search-title">Reservations for {{ search_date }}</h2>
+    <table class="reservation-table">
+        <thead>
+            <tr>
+              <th>Reservation ID</th>
+              <th>Username</th>
+              <th>Full Name</th>
+              <th>Phone number</th>   
+              <th>Service</th>
+              <th>Date</th>
+              <th>Transaction Title</th>
+              <th>Transaction ID</th>
+              <th>Status</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for reservation in reservations %}
+            <tr>
+              <td>{{ reservation.id }}</td>
+              <td>{{ reservation.username }}</td>
+              <td>{{ reservation.full_name }}</td>
+              <td>{{ reservation.phone_number }}</td>
+              <td>{{ reservation.service }}</td>  
+              <td>{{ reservation.date }}</td>
+              <td>{{ reservation.transaction_title }}</td>
+              <td>{{ reservation.transaction_id }}</td>
+              <td>{{ reservation.status }}</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+    {% else %}
+    <p class="no-reservations">No reservations found for the selected date.</p>
+{% endif %}
+
+  </div>
+  
+</body>
+
+<style>
+  body{
+      font-family: Arial, sans-serif;
+     
+  }
+  .content {
+        margin-left: 250px;
+        padding: 20px;
+      }
+      .header h1 {
+        text-align: center;
+      }
+      .main {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: center;
+      }
+      .main h1{
+        position: relative;
+        right: 30px;
+      }
+      .box {
+        width: 250px;
+        border: 1px solid #ccc;
+        padding: 20px;
+        margin: 20px;
+        text-align: center;
+        background-color: #c5c5c5;
+        border-radius: 20px;
+      }
+
+      .report-title, .search-title {
+  text-align: center;
+  color: #333;
+}
+.search-form {
+  display: flex;
+  justify-content: center;
+  margin: 20px 0;
+}
+.search-label {
+  font-weight: bold;
+  margin-right: 10px;
+}
+.search-input {
+  padding: 5px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  margin-right: 10px;
+}
+.search-button {
+  padding: 5px 10px;
+  border: none;
+  background-color: #007bff;
+  color: white;
+  border-radius: 4px;
+  cursor: pointer;
+}
+.search-button:hover {
+  background-color: #0056b3;
+}
+.reservation-table {
+  width: 85%;
+  margin: 20px auto;
+  border-collapse: collapse;
+}
+.reservation-table th, .reservation-table td {
+  padding: 10px;
+  border: 1px solid #ddd;
+  text-align: left;
+}
+.reservation-table th {
+  background-color: #007bff;
+  color: white;
+}
+.reservation-table tr:nth-child(even) {
+  background-color: #f9f9f9;
+}
+.reservation-table tr:hover {
+  background-color: #f1f1f1;
+}
+.no-reservations {
+  text-align: center;
+  color: #666;
+}
+.box img {
+  width: 100px; /* Adjust the width as needed */
+  height: auto; /* Maintain aspect ratio */
+  display: block; /* Ensure proper alignment */
+  margin: 0 auto 10px; /* Center the image horizontally and add some bottom margin */
+  border-radius: 50%; /* Make the image round */
+  border: 2px solid #fff; /* Add a white border around the image */
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* Add a subtle shadow effect */
+}
+  </style>
+
+</html>

@@ -1,0 +1,161 @@
+{% load static %}
+<!DOCTYPE html> 
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Admin Panel</title>
+  <link rel="stylesheet" href="{% static 'css/adminpage.css' %}">
+</head>
+
+<body>
+  <div class="sidebar">
+    <div class="logo">
+      Cheradel Suites
+    </div>
+    <ul class="menu">
+      <li><a href="/">Dashboard</a></li>
+      <li><a href="{% url 'reservation:customers' %}">Customer List</a></li>
+      <li><a href="{% url 'reservation:services_list_admin' %}">Services</a></li>
+      <li><a href="{% url 'reservation:reservation_list' %}">Reservation List</a></li>
+      <li><a href="{% url 'reservation:transaction_history' %}">Transaction History</a></li>
+      <li><a href="{% url 'reservation:report_list_admin' %}">Reports</a></li>
+      <li><a href="{% url 'account_logout' %}">Logout</a></li>
+    </ul>
+  </div>
+  <div class="content">
+    <div class="header">
+      <h1> </h1>
+    </div>
+    <div class="main">
+        <div class="services_con">
+            <div class="service_title">
+              <h1>Services</h1>
+              <p>Brighten Your Event and Day with the services we offer.</p>
+            </div>
+            <div class="service_grid">
+              {% for x in services %}
+                    <div class="service">
+                      <details>
+                        <summary>{{ x.service_name }}</summary>
+                        <p>{{ x.details }}</p>
+                      </details>
+                      <p class="text">Click to Expand</p>
+                      <p>Price: {{ x.price }}</p>
+                      <div class="action-buttons">
+                      <a href="update_service/{{ x.id  }}">UPDATE SERVICE</a><br>
+                      <a href="delete/{{ x.id  }}">DELETE SERVICE</a>
+                    </div>
+                    </div>
+
+                    {% endfor %}
+            </div>
+            </div>
+    </div>
+  </div>
+  <div class="action-buttons">
+    <a href="add_service">ADD SERVICE</a>
+    
+</div>
+
+  <style>
+    body {
+      background-color: #ffffff;
+      color: #000000;
+      font-family: Arial, sans-serif;
+    }
+  
+    .services_con {
+      padding: 2rem 0;
+    }
+  
+    .service_title {
+      text-align: center;
+      margin-bottom: 2rem;
+    }
+  
+    .service_title h1 {
+      font-size: 36px;
+      color: black;
+      margin-bottom: 0.5rem;
+    }
+  
+    .service_title p {
+      font-size: 18px;
+      color: #bfbfbf;
+      margin-bottom: 2rem;
+    }
+  
+    .service_grid {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: space-around;
+    }
+  
+    .service {
+      width: 30%;
+      padding: 1rem;
+      margin-bottom: 2rem;
+      background-color: #c5c5c5;
+      border-radius: 10px;
+      box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+      transition: transform 0.2s ease-in-out;
+    }
+  
+    .service:hover {
+      transform: scale(1.05);
+    }
+  
+    .service details {
+      text-align: center;
+      padding: 1rem;
+    }
+  
+    .service summary {
+      font-size: 20px;
+      color: #000000;
+      font-weight: bold;
+      margin-bottom: 0.5rem;
+      cursor: pointer;
+    }
+  
+    .service p {
+      font-size: 16px;
+      color: #000000;
+      margin-bottom: 1rem;
+    }
+  
+    .service .text {
+      font-size: 16px;
+      color: black;
+      text-decoration: underline;
+      cursor: pointer;
+    }
+  
+    .action-buttons {
+      text-align: center;
+      margin-top: 2rem;
+    }
+  
+    .action-buttons a {
+      display: inline-block;
+      padding: 10px 30px;
+      background-color: #007bff;
+      color: #ffffff;
+      text-decoration: none;
+      border-radius: 5px;
+      margin-right: 10px;
+      transition: background-color 0.3s;
+      margin: 10px;
+    }
+  
+    .action-buttons a:last-child {
+      margin-right: 0;
+    }
+  
+    .action-buttons a:hover {
+      background-color: #0056b3;
+    }
+  </style>
+</body>
+</html>

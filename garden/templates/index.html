@@ -1,0 +1,181 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FrostyBites Garden Hall</title>
+    <!-- Box Icons -->
+    <link rel="stylesheet"
+  href="https://unpkg.com/boxicons@latest/css/boxicons.min.css">
+  <!-- Link To CSS -->
+  <link rel="stylesheet" href="{% static 'css/landingpage.css' %}">
+
+</head>
+<body>
+    <!-- Navbar -->
+    <header>
+        <a href="#" class="logo">FrostyBites</a>
+        <div class="bx bx-menu" id="menu-icon"></div>
+
+        <ul class="navbar">
+            <li><a href="#home">Home</a></li>
+            <li><a href="#about">About</a></li>
+            <li><a href="#services">Service</a></li>
+            <li><a href="#contact">Contact</a></li>
+            <li><a href="{% url 'login' %}">Login</a></li>
+            <!-- Dark Mode -->
+            <div class="bx bx-moon" id="darkmode"></div>
+        </ul>
+    </header>
+    <!-- Home  Section-->
+    <section class="home" id="home">
+        <div class="home-text">
+            <h1>FrostyBites Garden Hall</h1>
+            <h2>Where every moment <br>is loved and cherished</h2>
+            <a href="{% url 'login' %}" class="btn">Reserve Now!</a>
+        </div>
+        <div class="home-img">
+          <div class="w3-content w3-section" style="max-width: 550px;">
+            <img class="mySlides" src="{% static 'images/gardenhall1.jpg' %}" alt="Example Image" style="width: 100%; border: 1px solid black;">
+            <img class="mySlides" src="{% static 'images/gardenhall2.jpg' %}" alt="Example Image" style="width: 100%; border: 1px solid black;">
+            <img class="mySlides" src="{% static 'images/gardenhall4.jpg' %}" alt="Example Image" style="width: 100%; border: 1px solid black;">
+          </div>
+        </div>
+    </section>
+
+    <!-- About -->
+    <section class="about" id="about">
+        <div class="about-img">
+            <img src="{% static 'images/gardenhall3.jpg' %}" alt="">
+        </div>
+        <div class="about-text">
+            <span>About Us</span>
+            <h2>We offer the best venue <br> for your ocassions</h2>
+            <p>A two-building complex promoting home stay guesting with residential ambiance and amenities</p>
+            <a href="#" class="btn" onclick="openPopup()">Learn More</a>
+        </div>
+    </section>
+
+    <div id="popupModal" class="popup">
+      <div class="popup-content">
+          <span class="close" onclick="closePopup()">&times;</span>
+          <h2>About Our Venue</h2>
+          <img src="" alt="Venue Image">
+          <p></p>
+          <!-- Add more content as needed -->
+      </div>
+  </div>
+    
+    
+    <!-- Service -->
+    <section class="services" id="services">
+        <div class="heading">
+            <span>Services</span>
+            <h2>We provide best services</h2>
+        </div>
+
+        <div class="servives-container">
+            <div class="services_con">
+              <div class="service_title">
+            
+              </div>
+              <div class="service_grid">
+                {% for x in services %}
+                <div class="service">
+                  <details>
+                    <summary>{{ x.service_name }}</summary>
+                    <p>{{ x.details }}</p>
+                  </details>
+                  <p class="text">Click to Expand</p>
+                  <p>{{ x.price }}</p>
+                  <a href="reservation_form/{{ x.id }}">   
+                    <button class="reserve-button">Reserve Now!</button>
+                </a>
+                </div>
+                {% endfor %}
+              </div>
+            </div>
+          </div>
+    </section>
+
+    <!-- Connect -->
+    <section class="connect">
+        <div class="connect-text">
+            <span>Let's Talk</span>
+            <h2>Connect now</h2>
+        </div>
+        
+    </section>
+
+    <!-- Contact -->
+    <section class="contact" id="contact">
+        <div class="contact-box">
+            <h3>FrostyBites</h3>
+            <span>Connect With Us</span>
+            <div class="social">
+              <a href="https://www.facebook.com/profile.php?id=100054534065983" target="_blank"><i class='bx bxl-facebook'></i></a>
+                <a href="#"><i class='bx bxl-twitter' ></i></a>
+                <a href="#"><i class='bx bxl-instagram' ></i></a>
+            </div>
+        </div>
+        <div class="contact-box address">
+            <h3>Contact</h3>
+            <i class='bx bxs-map' ><span>Purdue St., Camague, Tubod, Iligan City, Iligan, Philippines</span></i>
+            <i class='bx bxs-phone' ><span>+63 0927 987 6791</span></i>
+            <i class='bx bxs-envelope' ><span>frostybites@gmail.com</span></i>
+        </div>
+    </section>
+
+    <!-- Copyright -->
+    <div class="copyright">
+        <p>© FrostyBites All Right Reserved.</p>
+    </div>
+
+
+    <!-- Scroll Reveal -->
+    <script src="https://unpkg.com/scrollreveal"></script>
+    <!-- Link To JavaScript -->
+    <script src="script.js"></script>
+</body>
+
+<script>
+
+    function openPopup() {
+        var popupModal = document.getElementById('popupModal');
+        popupModal.style.display = 'block';
+    }
+    
+    function closePopup() {
+        var popupModal = document.getElementById('popupModal');
+        popupModal.style.display = 'none';
+    }
+    
+      var myIndex = 0;
+      carousel();
+      
+      function carousel() {
+        var i;
+        var x = document.getElementsByClassName("mySlides");
+        for (i = 0; i < x.length; i++) {
+        x[i].style.display = "none";  
+        }
+        myIndex++;
+        if (myIndex > x.length) {myIndex = 1}    
+        x[myIndex-1].style.display = "block";  
+        setTimeout(carousel, 1500); // Change image every 2 seconds
+      }
+      
+      document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+          anchor.addEventListener('click', function (e) {
+              e.preventDefault();
+    
+              document.querySelector(this.getAttribute('href')).scrollIntoView({
+                  behavior: 'smooth'
+              });
+          });
+      });
+    </script>
+    
+</html>

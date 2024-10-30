@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>User Dashboard</title>
+  <link rel="stylesheet" href="{% static 'css/landingpage.css' %}">
+</head>
+<body>
+  <header>
+    <a href="#" class="logo">Cheradel Suites</a>
+    <ul class="navbar">
+      <li><a href="{% url 'reservation:user_reservation_list' %}">Reservation History</a></li>
+      <li><a href="{% url 'reservation:user_transaction_list' %}">Transaction History</a></li>
+      <li><a href="{% url 'account_logout' %}">Logout</a></li>
+    </ul>
+  </header>
+  <section class="home" id="home">
+    <h1>Welcome, {{ user.username }}</h1>
+    <!-- Additional user-specific content -->
+  </section>
+</body>
+</html>

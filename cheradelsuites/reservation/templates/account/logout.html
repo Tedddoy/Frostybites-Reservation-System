@@ -1,0 +1,90 @@
+
+{% block content %}
+<div class="container">
+  <h1 class="heading">Sign Out</h1>
+  <p class="paragraph">Are you sure you want to sign out?</p>
+  <div class="justify-center mx-3">
+      <form method="post" action="{% url 'account_logout' %}">
+          {% csrf_token %}
+          <div class="">
+              <button type="submit" class="button sign-out-button">Sign Out</button>
+          </div>
+      </form>
+      <div class="justify-center ">
+          <button class="button cancel-button"><a href="/home">Cancel</a></button>
+      </div>
+  </div>
+</div>
+
+  {% endblock %}
+
+</div>
+
+<style>
+@import url("https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap");
+   
+  .container {
+    max-width: 500px;
+    margin: 0 auto;
+    padding: 20px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    background-color: #f9f9f9;
+    position: relative;
+    top: 200px;
+    font-family: "Poppins", sans-serif;
+}
+
+/* Style for the heading */
+.heading {
+    text-align: center;
+    background-color: #E5E7EB; /* Change background color */
+    height: 52px;
+    font-weight: bold;
+    font-size: 24px; /* Change font size */
+    line-height: 52px; /* Vertically center text */
+}
+
+/* Style for the paragraph */
+.paragraph {
+    text-align: center;
+    margin-top: 20px; /* Increase top margin */
+    margin-bottom: 20px; /* Increase bottom margin */
+}
+
+/* Style for the buttons */
+.button {
+    display: block;
+    width: 100%;
+    padding: 10px;
+    border-radius: 4px;
+    cursor: pointer;
+    text-align: center;
+    margin-bottom: 10px; /* Increase bottom margin */
+}
+
+.button a {
+    text-decoration: none;
+    color: white; /* Change text color */
+}
+
+/* Style for the Sign Out button */
+.sign-out-button {
+    background-color: #2563EB; /* Change background color */
+    color: white;
+}
+
+
+.sign-out-button:hover {
+    background-color: #2563EB; /* Darken background color on hover */
+}
+
+/* Style for the Cancel button */
+.cancel-button {
+    background-color: #2563EB; /* Change background color */
+}
+
+.cancel-button:hover {
+    background-color: #1E40AF; /* Darken background color on hover */
+}
+</style>

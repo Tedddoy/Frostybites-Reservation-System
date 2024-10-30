@@ -1,0 +1,213 @@
+{% load static %}
+<!DOCTYPE html> 
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Admin Panel</title>
+  <link rel="stylesheet" href="{% static 'css/adminpage.css' %}">
+</head>
+
+<body>
+  <div class="sidebar">
+    <div class="logo">
+      Cheradel Suites
+    </div>
+    <ul class="menu">
+      <li><a href="/">Dashboard</a></li>
+      <li><a href="{% url 'reservation:customers' %}">Customer List</a></li>
+      <li><a href="{% url 'reservation:services_list_admin' %}">Services</a></li>
+      <li><a href="{% url 'reservation:reservation_list' %}">Reservation List</a></li>
+      <li><a href="{% url 'reservation:transaction_history' %}">Transaction History</a></li>
+      <li><a href="{% url 'reservation:report_list_admin' %}">Reports</a></li>
+      <li><a href="{% url 'account_logout' %}">Logout</a></li>
+    </ul>
+  </div>
+  <div class="content">
+    <div class="header">
+        <h1></h1>
+    </div>
+    <div class="main">
+        <div class="nav">
+            <h1>Customer List</h1>
+        </div>
+        <div class="con">
+            <div class="list_con">
+                <table id="stud_list">
+                    <tr>
+                        <th>Username</th>
+                        <th>Email</th>
+                        
+                    </tr>
+                    {% for user in users %}
+                    <tr>
+                        <td>{{ user.username }}</td>
+                        <td>{{ user.email }}</td>
+                        
+                    </tr>
+                    {% endfor %}
+                </table>
+            </div>
+        </div>
+        <div id="detailsModal" class="modal">
+            <div class="modal-content">
+                <span class="close" onclick="closeDetailsModal()">&times;</span>
+                <h2>User Details</h2>
+                <p><strong>Username:</strong> <span id="modalUsername"></span></p>
+                <p><strong>Email:</strong> <span id="modalEmail"></span></p>
+                <div class="con" id="userReservations">
+                  <h3>User Reservations</h3>
+                  <table>
+                      <thead>
+                          <tr>
+                              <th>Reservation ID</th>
+                              <th>Service</th>
+                              <th>Date</th>
+                              <th>Status</th>
+                          </tr>
+                      </thead>
+                      <tbody>
+                          <!-- Iterate through user's reservations and display them here -->
+                          {% for reservation in user.reservations %}
+                          <tr>
+                              <td>{{ reservation.id }}</td>
+                              <td>{{ reservation.service.service_name }}</td>
+                              <td>{{ reservation.date }}</td>
+                              <td>{{ reservation.status }}</td>
+                          </tr>
+                          {% endfor %}
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+  <style>
+    body, h1, h2, h3, p, ul, li, table {
+margin: 0;
+padding: 0;
+}
+
+/* Body styling */
+body {
+font-family: Arial, sans-serif;
+background-color: #f9f9f9;
+}
+
+/* Navigation styling */
+.nav {
+background-color: #333;
+color: #fff;
+padding: 20px;
+text-align: center;
+}
+
+.nav h1 {
+font-size: 24px;
+margin-bottom: 10px;
+}
+
+.nav a {
+color: #fff;
+text-decoration: none;
+margin-right: 20px;
+}
+
+/* Content styling */
+.con {
+padding: 20px;
+}
+
+.list-con {
+background-color: #fff;
+border-radius: 5px;
+box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+padding: 20px;
+}
+
+/* Table styling */
+#stud_list {
+width: 100%;
+border-collapse: collapse;
+}
+
+#stud_list th,
+#stud_list td {
+padding: 10px;
+border-bottom: 1px solid #ddd;
+}
+
+#stud_list th {
+background-color: #f2f2f2;
+text-align: left;
+}
+
+#stud_list td {
+text-align: left;
+}
+
+/* Button styling */
+.btns {
+text-align: center;
+}
+
+.green {
+color: #fff;
+background-color: #28a745;
+padding: 5px 10px;
+border-radius: 3px;
+text-decoration: none;
+}
+
+.red {
+color: #fff;
+background-color: #dc3545;
+padding: 5px 10px;
+border-radius: 3px;
+text-decoration: none;
+}
+
+.green:hover,
+.red:hover {
+opacity: 0.8;
+}
+    
+.modal {
+    display: none; /* Hidden by default */
+    position: fixed; /* Stay in place */
+    z-index: 1; /* Sit on top */
+    left: 0;
+    top: 0;
+    width: 100%; /* Full width */
+    height: 100%; /* Full height */
+    overflow: auto; /* Enable scroll if needed */
+    background-color: rgba(0,0,0,0.4); /* Black w/ opacity */
+}
+
+/* Modal content */
+.modal-content {
+    background-color: #fefefe;
+    margin: 15% auto; /* 15% from the top and centered */
+    padding: 20px;
+    border: 1px solid #888;
+    width: 80%; /* Could be more or less, depending on screen size */
+}
+
+/* Close button */
+.close {
+    color: #aaa;
+    float: right;
+    font-size: 28px;
+    font-weight: bold;
+}
+
+.close:hover,
+.close:focus {
+    color: black;
+    text-decoration: none;
+    cursor: pointer;
+}
+ </style>
+
+</body>
+</html>

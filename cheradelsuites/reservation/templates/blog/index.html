@@ -1,0 +1,432 @@
+{% load static %}
+<!doctype html>
+<html>
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+    integrity="sha512-iecdLmaskl7CVkqkXNQ/ZH/XLlvWZOJyj7Yy7tcenmpD1ypASozpmT/E0iPtmFIB46ZmdtAc9eNBvH0H/ZpiBw=="
+    crossorigin="anonymous" referrerpolicy="no-referrer" />
+  <script src="https://cdn.tailwindcss.com"></script>
+</head>
+
+<body>
+  {% load account %}
+  
+  {% if user.is_authenticated %}
+   {% if user.is_staff %}
+  
+  <!DOCTYPE html> 
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Admin Panel</title>
+  <link rel="stylesheet" href="{% static 'css/adminpage.css' %}">
+</head>
+
+<body>
+  <div class="sidebar">
+    <div class="logo">
+      Cheradel Suites
+    </div>
+    <ul class="menu">
+      <li><a href="#">Dashboard</a></li>
+      <li><a href="{% url 'reservation:customers' %}">Customer List</a></li>
+      <li><a href="{% url 'reservation:services_list_admin' %}">Services</a></li>
+      <li><a href="{% url 'reservation:reservation_list' %}">Reservation List</a></li>
+      <li><a href="{% url 'reservation:transaction_history' %}">Transaction History</a></li>
+      <li><a href="{% url 'reservation:report_list_admin' %}">Reports</a></li>
+      <li><a href="{% url 'account_logout' %}">Logout</a></li>
+    </ul>
+  </div>
+  <div class="content">
+    <div class="header">
+      <h1>Welcome to the Admin Panel</h1>
+    </div>
+    
+  </div>
+</body>
+</html>
+
+
+  {%else%}
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cheradel Buqorno Banquet Hall</title>
+    <!-- Box Icons -->
+    <link rel="stylesheet"
+  href="https://unpkg.com/boxicons@latest/css/boxicons.min.css">
+  <!-- Link To CSS -->
+  <link rel="stylesheet" href="{% static 'css/landingpage.css' %}">
+
+</head>
+<body>
+    <header>
+        <a href="#" class="logo">Cheradel Suites</a>
+        <div class="bx bx-menu" id="menu-icon"></div>
+
+        <ul class="navbar">
+          <li class="welcome">Welcome, {{ user.username }}</li>
+          <li><a href="{% url 'reservation:user_reservation_list' %}">Reservation History</a></li>
+          <li><a href="{% url 'reservation:user_transaction_list' %}">Transaction History</a></li>
+            <li><a href="#home">Home</a></li>
+            <li><a href="#about">About</a></li>
+            <li><a href="#services">Service</a></li>
+            <li><a href="#contact">Contact</a></li>
+            <li><a href="{% url 'account_logout' %}">Logout</a></li>
+            
+        </ul>
+    </header>
+    <!-- Home  Section-->
+    <section class="home" id="home">
+        <div class="home-text">
+            <h1>Cheradel Buqorno Banquet Hall</h1>
+            <h2>Where every moment <br>is loved and cherished</h2>
+            
+        </div>
+        <div class="home-img">
+          <div class="w3-content w3-section" style="max-width: 700px;">
+            <img class="mySlides" src="{% static 'images/cheradel1.jpg' %}" alt="Example Image" style="width: 300%; border: 1px solid black;">
+            <img class="mySlides" src="{% static 'images/cheradel2.jpg' %}" alt="Example Image" style="width: 200%; border: 1px solid black;">
+            <img class="mySlides" src="{% static 'images/cheradel3.jpg' %}" style="width: 200%; border: 1px solid black;">
+          </div>
+        </div>
+    </section>
+
+    <!-- About -->
+    <section class="about" id="about">
+        <div class="about-img">
+            <img src="{% static 'images/cheradel6.jpg' %}" alt="">
+        </div>
+        <div class="about-text">
+            <span>About Us</span>
+            <h2>We offer the best venue <br> for your ocassions</h2>
+            <p>A six- building complex promoting home stay guesting with residential ambiance and amenities.
+              Located at Bro.Jeffrey Raymund Street. Brgy. Pala-o, Iligan City.
+            </p>
+            <a href="#" class="btn" onclick="openPopup()">Learn More</a>
+        </div>
+    </section>
+
+    <div id="popupModal" class="popup">
+      <div class="popup-content">
+          <span class="close" onclick="closePopup()">&times;</span>
+          <h2>About Our Venue</h2>
+          <img src="{% static 'images/cheradellocation.jpg' %}" alt="Venue Image">
+          <p></p>
+          <!-- Add more content as needed -->
+      </div>
+  </div>
+    
+
+    <!-- Service -->
+    <section class="services" id="services">
+        <div class="heading">
+            <span>Services</span>
+            <h2>We provide best services</h2>
+        </div>
+
+        <div class="servives-container">
+          <div class="services_con">
+            <div class="service_title">
+          
+            </div>
+            <div class="service_grid">
+              {% for x in services %}
+              <div class="service">
+                <details>
+                  <summary>{{ x.service_name }}</summary>
+                  <p>{{ x.details }}</p>
+                </details>
+                <p class="text">Click to Expand</p>
+                <p>{{ x.price }}</p>
+                <a href="reservation_form/{{ x.id }}">   
+                  <button class="reserve-button">Reserve Now!</button>
+              </a>
+              </div>
+              {% endfor %}
+            </div>
+          </div>
+        </div>
+    </section>
+
+    <!-- Connect -->
+    <section class="connect">
+        <div class="connect-text">
+            <span>Let's Talk</span>
+            <h2>Connect now</h2>
+        </div>
+        
+    </section>
+
+  <!-- The Modal -->
+ 
+    <!-- Contact -->
+    <section class="contact" id="contact">
+        <div class="contact-box">
+            <h3>Cheradel Suites</h3>
+            <span>Connect With Us</span>
+            <div class="social">
+                <a href="https://www.facebook.com/profile.php?id=100054534065983"><i class='bx bxl-facebook' ></i></a>
+                <a href="#"><i class='bx bxl-twitter' ></i></a>
+                <a href="#"><i class='bx bxl-instagram' ></i></a>
+            </div>
+        </div>
+        <div class="contact-box address">
+            <h3>Contact</h3>
+            <i class='bx bxs-map' ><span>Bro. Jeffrey Raymund Street. Pala-o, Iligan City</span></i>
+            <i class='bx bxs-phone' ><span>+63 0927 987 6791</span></i>
+            <i class='bx bxs-envelope' ><span>cheradelsuites@gmail.com</span></i>
+        </div>
+    </section>
+
+    <!-- Copyright -->
+    <div class="copyright">
+        <p>© Cheradel Suites All Right Reserved.</p>
+    </div>
+
+
+    <!-- Scroll Reveal -->
+    <script src="https://unpkg.com/scrollreveal"></script>
+    <!-- Link To JavaScript -->
+    <script src="script.js"></script>
+</body>
+</html>
+  
+
+
+
+<script>
+  var myIndex = 0;
+  carousel();
+  
+  function carousel() {
+    var i;
+    var x = document.getElementsByClassName("mySlides");
+    for (i = 0; i < x.length; i++) {
+    x[i].style.display = "none";  
+    }
+    myIndex++;
+    if (myIndex > x.length) {myIndex = 1}    
+    x[myIndex-1].style.display = "block";  
+    setTimeout(carousel, 1500); // Change image every 2 seconds
+  }
+  
+  document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+      anchor.addEventListener('click', function (e) {
+          e.preventDefault();
+
+          document.querySelector(this.getAttribute('href')).scrollIntoView({
+              behavior: 'smooth'
+          });
+      });
+  });
+</script>
+
+  {%endif%}
+
+  {% else %}
+
+  <html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cheradel Buqorno Banquet Hall</title>
+    <!-- Box Icons -->
+    <link rel="stylesheet"
+  href="https://unpkg.com/boxicons@latest/css/boxicons.min.css">
+  <!-- Link To CSS -->
+  <link rel="stylesheet" href="{% static 'css/landingpage.css' %}">
+
+</head>
+<body>
+    <!-- Navbar -->
+    <header>
+        <a href="#" class="logo">Cheradel Suites</a>
+        <div class="bx bx-menu" id="menu-icon"></div>
+
+        <ul class="navbar">
+            <li><a href="#home">Home</a></li>
+            <li><a href="#about">About</a></li>
+            <li><a href="#services">Service</a></li>
+            <li><a href="#contact">Contact</a></li>
+            <li><a href="{% url 'account_login' %}">Login</a></li>
+            <!-- Dark Mode -->
+            <div class="bx bx-moon" id="darkmode"></div>
+        </ul>
+    </header>
+    <!-- Home  Section-->
+    <section class="home" id="home">
+        <div class="home-text">
+            <h1>Cheradel Buqorno Banquet Hall</h1>
+            <h2>Where every moment <br>is loved and cherished</h2>
+            <a href="{% url 'account_login' %}" class="btn">Reserve Now!</a>
+        </div>
+        <div class="home-img">
+          <div class="w3-content w3-section" style="max-width: 700px;">
+            <img class="mySlides" src="{% static 'images/cheradel1.jpg' %}" alt="Example Image" style="width: 300%; border: 1px solid black;">
+            <img class="mySlides" src="{% static 'images/cheradel2.jpg' %}" alt="Example Image" style="width: 200%; border: 1px solid black;">
+            <img class="mySlides" src="{% static 'images/cheradel3.jpg' %}" style="width: 200%; border: 1px solid black;">
+          </div>
+        </div>
+    </section>
+
+    <!-- About -->
+    <section class="about" id="about">
+        <div class="about-img">
+            <img src="{% static 'images/cheradel6.jpg' %}" alt="">
+        </div>
+        <div class="about-text">
+            <span>About Us</span>
+            <h2>We offer the best venue <br> for your ocassions</h2>
+            <p>A six- building complex promoting home stay guesting with residential ambiance and amenities</p>
+            <a href="#" class="btn" onclick="openPopup()">Learn More</a>
+        </div>
+    </section>
+
+    <div id="popupModal" class="popup">
+      <div class="popup-content">
+          <span class="close" onclick="closePopup()">&times;</span>
+          <h2>About Our Venue</h2>
+          <img src="{% static 'images/cheradellocation.jpg' %}" alt="Venue Image">
+          <p></p>
+          <!-- Add more content as needed -->
+      </div>
+  </div>
+    
+    
+    <!-- Service -->
+    <section class="services" id="services">
+        <div class="heading">
+            <span>Services</span>
+            <h2>We provide best services</h2>
+        </div>
+
+        <div class="servives-container">
+          <div class="service_grid">
+            <div class="service">
+              <details>
+                <summary>Wedding Plan(Venue and Decorations)</summary>
+                <p>Reserve the Cheradel Banquet Hall with beautiful and elegant wedding decorations</p>
+              </details>
+              <p class="text">Click to Expand</p>
+              <a href="{% url 'account_login' %}">   
+                <button>Reserve Now!</button>
+            </a>
+            </div>
+            <div class="service">
+              <details>
+                <summary>Birthday Plan(Venue and Decorations)</summary>
+                <p>Celebrate a birthday with us! with fun and exciting birthday decorations.</p>
+              </details>
+              <p class="text">Click to Expand</p>
+              <a href="{% url 'account_login' %}">   
+                <button>Reserve Now!</button>
+            </a>
+            </div>
+            <div class="service">
+              <details>
+                <summary>Private Gathering Plan (Venue and Decorations)</summary>
+                <p>Reserve the Cheradel Banquet Hall for your gathering with family and friends!</p>
+              </details>
+              <p class="text">Click to Expand</p>
+              <a href="{% url 'account_login' %}">   
+                <button>Reserve Now!</button>
+            </a>
+            </div>
+            
+          </div>
+        </div>
+    </section>
+
+    <!-- Connect -->
+    <section class="connect">
+        <div class="connect-text">
+            <span>Let's Talk</span>
+            <h2>Connect now</h2>
+        </div>
+        
+    </section>
+
+    <!-- Contact -->
+    <section class="contact" id="contact">
+        <div class="contact-box">
+            <h3>Cheradel Suites</h3>
+            <span>Connect With Us</span>
+            <div class="social">
+              <a href="https://www.facebook.com/profile.php?id=100054534065983" target="_blank"><i class='bx bxl-facebook'></i></a>
+                <a href="#"><i class='bx bxl-twitter' ></i></a>
+                <a href="#"><i class='bx bxl-instagram' ></i></a>
+            </div>
+        </div>
+        <div class="contact-box address">
+            <h3>Contact</h3>
+            <i class='bx bxs-map' ><span>Bro. Jeffrey Raymund Street. Pala-o, Iligan City</span></i>
+            <i class='bx bxs-phone' ><span>+63 0927 987 6791</span></i>
+            <i class='bx bxs-envelope' ><span>cheradelsuites@gmail.com</span></i>
+        </div>
+    </section>
+
+    <!-- Copyright -->
+    <div class="copyright">
+        <p>© Cheradel Suites All Right Reserved.</p>
+    </div>
+
+
+    <!-- Scroll Reveal -->
+    <script src="https://unpkg.com/scrollreveal"></script>
+    <!-- Link To JavaScript -->
+    <script src="script.js"></script>
+</body>
+</html>
+ 
+{% endif %}
+
+<script>
+
+function openPopup() {
+    var popupModal = document.getElementById('popupModal');
+    popupModal.style.display = 'block';
+}
+
+function closePopup() {
+    var popupModal = document.getElementById('popupModal');
+    popupModal.style.display = 'none';
+}
+
+  var myIndex = 0;
+  carousel();
+  
+  function carousel() {
+    var i;
+    var x = document.getElementsByClassName("mySlides");
+    for (i = 0; i < x.length; i++) {
+    x[i].style.display = "none";  
+    }
+    myIndex++;
+    if (myIndex > x.length) {myIndex = 1}    
+    x[myIndex-1].style.display = "block";  
+    setTimeout(carousel, 1500); // Change image every 2 seconds
+  }
+  
+  document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+      anchor.addEventListener('click', function (e) {
+          e.preventDefault();
+
+          document.querySelector(this.getAttribute('href')).scrollIntoView({
+              behavior: 'smooth'
+          });
+      });
+  });
+</script>
+
+ 
+</body>
+
+</html>

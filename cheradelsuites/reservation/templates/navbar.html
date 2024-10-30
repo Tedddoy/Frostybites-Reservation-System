@@ -1,0 +1,40 @@
+<nav class="navbar">
+    
+    {% if user.is_authenticated %}
+        {% if user.is_staff or user.is_superuser %}
+        
+        {% elif user.is_staff %}
+           
+        {% else %}
+        <ul>
+            <li><a href="#home">Home</a></li>
+            <li><a href="#services">Our Services</a></li>
+            <li><a href="#contact">Contact Us</a></li>
+            {% if user.is_authenticated %}
+                <li class="welcome">Welcome, {{ user.username }}</li>
+                <li><a href="user_reservation_list">Reservation History</a></li>
+                <li><a href="{% url 'account_logout' %}">Sign Out</a></li>
+               
+                </style>
+            {% else %}
+                <li><a href="{% url 'account_login' %}">Sign In</a></li>
+                <li><a href="{% url 'account_signup' %}">Sign Up</a></li>
+            {% endif %}
+        </ul>
+        <style>
+            nav ul li.welcome {
+        color: #fff;
+        margin-left: 700px;
+        
+        }
+        </style>
+        {% endif %}
+        {% else %}
+            <ul>
+                <li><a href="#home">Home</a></li>
+                <li><a href="#services">Our Services</a></li>
+                <li><a href="#contact">Contact Us</a></li>
+                <li><a href="{% url 'account_login' %}">Log In</a></li>
+            </ul>
+        {% endif %}
+  </nav>

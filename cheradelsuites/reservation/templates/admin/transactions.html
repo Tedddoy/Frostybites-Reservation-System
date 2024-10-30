@@ -1,0 +1,98 @@
+{% load static %}
+<!DOCTYPE html> 
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Admin Panel</title>
+  <link rel="stylesheet" href="{% static 'css/adminpage.css' %}">
+</head>
+
+<body>
+  <div class="sidebar">
+    <div class="logo">
+      Cheradel Suites
+    </div>
+    <ul class="menu">
+      <li><a href="#">Dashboard</a></li>
+      <li><a href="{% url 'reservation:customers' %}">Customer List</a></li>
+      <li><a href="{% url 'reservation:services_list_admin' %}">Services</a></li>
+      <li><a href="{% url 'reservation:reservation_list' %}">Reservation List</a></li>
+      <li><a href="{% url 'reservation:transaction_history' %}">Transaction History</a></li>
+      <li><a href="{% url 'reservation:report_list_admin' %}">Reports</a></li>
+      <li><a href="{% url 'account_logout' %}">Logout</a></li>
+    </ul>
+  </div>
+  <div class="content">
+    <h1>Transaction History</h1>
+    <table>
+      <thead>
+          <tr>
+            <th>Transaction ID</th>
+            <th>Transaction Title</th>
+            <th>Amount</th>
+            <th>Date</th>
+            <th>Reservation</th>
+              <!-- Add additional table headers for other reservation details -->
+          </tr>
+      </thead>
+      <tbody>
+          {% for transaction in transactions %}
+          <tr>
+            <td>{{ transaction.id }}</td>
+            <td>{{ transaction.title }}</td>
+            <td>{{ transaction.amount }}</td>
+            <td>{{ transaction.date }}</td>
+            <td>
+                {% if transaction.reservation %}
+                    {{ transaction.reservation.id }} - {{ transaction.reservation.user.username }} - {{ transaction.reservation.service}}
+                {% else %}
+                    No associated reservation
+                {% endif %}
+              <td>
+              
+              </td>
+          </tr>
+          {% endfor %}
+      </tbody>
+  </table>
+
+  </div>
+ 
+    
+</div>
+
+  <style>
+    body {
+                font-family: Arial, sans-serif;
+                margin: 0;
+                padding: 0;
+                background-color: #f9f9f9;
+            }
+            h1 {
+                text-align: center;
+                margin-top: 20px;
+                color: #333333;
+            }
+            table {
+                width: 100%;
+                margin: 20px auto;
+                border-collapse: collapse;
+                box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+                background-color: #ffffff;
+            }
+            th, td {
+                padding: 12px 15px;
+                text-align: left;
+                border-bottom: 1px solid #dddddd;
+            }
+            th {
+                background-color: #f2f2f2;
+                color: #333333;
+            }
+            tr:hover {
+                background-color: #f5f5f5;
+            }
+  </style>
+</body>
+</html>

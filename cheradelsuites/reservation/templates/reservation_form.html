@@ -1,0 +1,135 @@
+<form method="post"  class="form">
+    {% csrf_token %}
+    <h1>Reservation Form</h1>
+    {% if messages %}
+    <ul class="messages">
+        {% for message in messages %}
+            {% if message.tags == 'error' %}
+                <li class="{{ message.tags }}">{{ message }}</li>
+            {% endif %}
+        {% endfor %}
+    </ul>
+{% endif %}
+    <div class="form-group">
+        {{ form.first_name.label_tag }}
+        {{ form.first_name }}
+    </div>
+    <div class="form-group">
+        {{ form.last_name.label_tag }}
+        {{ form.last_name }}
+    </div>
+    <div class="form-group">
+        {{ form.date.label_tag }}
+        <input type="date" id="date" name="date" required>
+    </div>
+    <div class="form-group">
+        {{ form.phone_number.label_tag }}
+        {{ form.phone_number }}
+    </div>
+    <div class="form-group">
+        {{ form.service.label_tag }}
+        {{ form.service }}
+    </div>
+    <p>Chosen Service: {{ service_name }}</p>
+    <p>Price: {{ service_price }}</p>
+    <button type="submit" class="btn btn-primary">Submit Reservation</button>
+    <button class="home-button"><a href="/home">Back to Home</a></button>
+</form>
+
+
+<style>
+@import url('https://fonts.googleapis.com/css?family=Roboto:700&display=swap');
+    body{
+        background-image: url('/static/images/cheradel2.jpg');
+        font-family: 'Mulish', sans-serif;
+    }
+
+    .form {
+    max-width: 500px;
+    margin: 0 auto;
+    padding: 20px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    background-color: #f9f9f9;
+    top: 170px;
+    position: relative;
+}
+
+/* Style for form group */
+.form-group {
+    margin-bottom: 20px;
+}
+
+/* Style for form labels */
+label {
+    display: block;
+    font-weight: bold;
+    margin-bottom: 5px;
+}
+
+/* Style for form inputs */
+input[type="text"],
+input[type="date"] {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+}
+
+/* Style for the Chosen Service */
+.chosen-service {
+    font-weight: bold;
+    margin-top: 10px;
+}
+.btn-primary {
+    display: inline-block;
+    padding: 10px 20px;
+    background-color: #007bff;
+    color: #fff;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+    text-decoration: none; /* Remove underline */
+}
+
+.btn-primary:hover {
+    background-color: #0056b3;
+    /* Darken background color on hover */
+}
+
+.btn-primary:focus {
+    outline: none;
+    /* Remove default focus outline */
+}
+
+.btn-primary:active {
+    transform: translateY(1px);
+    /* Add slight downward movement on click */
+}
+.home-button {
+    display: inline-block;
+    background-color: #007bff;
+    color: #fff;
+    border: none;
+    border-radius: 4px;
+    padding: 10px 20px;
+    cursor: pointer;
+    text-decoration: none; /* Remove underline from anchor tag */
+}
+
+.home-button:hover {
+    background-color: #0056b3;
+    /* Darken background color on hover */
+}
+
+.home-button:focus {
+    outline: none;
+    /* Remove default focus outline */
+}
+
+.home-button a {
+    text-decoration: none;
+    color: inherit; /* Inherit color from parent */
+}
+</style>

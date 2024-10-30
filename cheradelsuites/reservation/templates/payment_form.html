@@ -1,0 +1,204 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <style>
+        @import url("https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap");
+        body{
+            font-family: 'Poppins', sans-serif;
+            
+        }
+        .container {
+            width: 50%;
+            margin: 100px auto;
+            background-color: whitesmoke;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        /* Style the submit button */
+        input[type="submit"] {
+            background-color: #007bff;
+            color: white;
+            padding: 12px 20px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 16px;
+        }
+        input[type="submit"]:hover {
+            background-color: #0056b3;
+        }
+        #paypal-button-container{
+            width: 50%;
+            margin: 50px auto;
+        }
+        #result-message{
+            width: 50%;
+            margin: 0 auto;
+        }
+        h2 {
+            font-size: 24px;
+            margin-bottom: 20px;
+        }
+        h2 {
+            font-size: 20px;
+            margin-bottom: 10px;
+            color: #333333;
+        }
+        h2 {
+            font-size: 18px;
+            margin-bottom: 30px;
+            color: #666666;
+        }
+        .back-button {
+    display: inline-block;
+    padding: 10px 20px;
+    font-size: 16px;
+    font-weight: bold;
+    color: #fff;
+    background-color: #007BFF; /* Blue background */
+    border: none;
+    border-radius: 5px;
+    text-decoration: none;
+    text-align: center;
+    transition: background-color 0.3s, transform 0.3s;
+}
+
+.back-button:hover {
+    background-color: #0056b3; /* Darker blue on hover */
+    transform: scale(1.05); /* Slightly larger on hover */
+}
+
+.back-button:active {
+    background-color: #004080; /* Even darker blue when clicked */
+    transform: scale(1); /* Back to original size when clicked */
+}
+
+
+    </style>
+</head>
+
+
+<body>
+    <div class="mainlogo">
+        <img class="" src="" alt="">
+      </div>
+      
+    <div class="container" data-reservation-id="{{ reservation.id }}">
+        <h1>CHERADEL SUITES</h1>
+        <h2></h2>
+        <h2>Plan: {{ reservation.service.service_name }}</h2>
+        <h2>Total Price: {{ reservation.service.price }}</h2>
+       
+        <div id="paypal-button-container"></div>
+        <p id="result-message"></p>
+        <a href="/user_reservation_list/" class="back-button">Back</a>
+    </div>
+        <!-- Initialize the JS-SDK -->
+    <script
+    src="https://www.paypal.com/sdk/js?client-id=Afzg6kEQW-oUHLUWoPMGJGS0ekmU7gKdUDTBC_RxU4mK_nBqR9esnPUM8mDEBoANRoNNIv46AdemDxeb&buyer-country=PH&currency=PHP&components=buttons&enable-funding=venmo"
+    data-sdk-integration-source="developer-studio"
+    ></script>
+
+    
+    <script>
+        // Render the PayPal button
+        paypal.Buttons({
+            style: {
+                shape: "rect",
+                layout: "vertical",
+                color: "gold",
+                label: "paypal",
+            },
+            // Function to create an order
+            createOrder: function(data, actions) {
+                return actions.order.create({
+                    purchase_units: [{
+                        amount: {
+                            value: '{{reservation.service.price}}' // Sample amount, replace with your actual value
+                        }
+                    }]
+                });
+            },
+            // Function to capture the transaction when approved
+            onApprove: function(data, actions) {
+    return actions.order.capture().then(function(details) {
+        // Extract the transaction ID and amount
+        var transactionId = details.id;
+        var amount = details.purchase_units[0].amount.value;
+        var date = details.create_time;
+
+        // Retrieve the booking ID from the container div
+        var reservationId = document.querySelector('.container').dataset.reservationId;
+
+        // Send the transaction ID, amount, and booking ID to your server
+        var xhr = new XMLHttpRequest();
+        xhr.open("POST", "/todos1/" + reservationId + "/", true);
+        xhr.setRequestHeader("Content-Type", "application/json");
+
+        // Include CSRF token in the request headers
+        var csrftoken = getCookie('csrftoken');
+        xhr.setRequestHeader("X-CSRFToken", csrftoken);
+
+        xhr.onerror = function() {
+            console.error("Error occurred during transaction saving.");
+            // Handle error feedback to the user
+            document.getElementById('result-message').innerHTML = '<b>Error occurred during transaction saving. Please try again later.</b>';
+        };
+
+        xhr.onload = function() {
+            if (xhr.status === 200) {
+                // Handle success response from server if needed
+                console.log("Transaction ID and amount saved successfully");
+                alert("Payment successful");
+                    // Redirect to the provided URL
+                  
+            } else {
+                console.error("Transaction ID and amount not saved. Status: " + xhr.status);
+                // Handle error feedback to the user
+                document.getElementById('result-message').innerHTML = '<b>Error occurred during transaction saving. Please try again later.</b>';
+            }
+        };
+
+        xhr.send(JSON.stringify({ transaction_id: transactionId, amount: amount, date: date }));
+        
+        // Show a success message to the buyer
+        document.getElementById('result-message').innerHTML = '<b>Transaction completed!</b>';
+        // Optional: You can do something more with the transaction details
+        console.log(details);
+    }).catch(function(error) {
+        console.error("An error occurred during transaction capture:", error);
+        // Handle the error or show an appropriate message to the user
+        document.getElementById('result-message').innerHTML = '<b>Error occurred during transaction capture. Please try again later.</b>';
+    });
+},
+            // Function to handle errors
+            onError: function(err) {
+                console.error(err);
+                document.getElementById('result-message').innerHTML = '<b>Error occurred:</b> ' + JSON.stringify(err);
+            }
+        }).render('#paypal-button-container');
+    
+        // Function to get CSRF token from cookies
+        function getCookie(name) {
+            let cookieValue = null;
+            if (document.cookie && document.cookie !== '') {
+                const cookies = document.cookie.split(';');
+                for (let i = 0; i < cookies.length; i++) {
+                    const cookie = cookies[i].trim();
+                    // Does this cookie string begin with the name we want?
+                    if (cookie.substring(0, name.length + 1) === (name + '=')) {
+                        cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                        break;
+                    }
+                }
+            }
+            return cookieValue;
+        }
+    </script>
+</body>
+</html>
