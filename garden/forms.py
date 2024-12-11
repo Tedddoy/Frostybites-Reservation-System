@@ -34,6 +34,11 @@ class ServiceForm(forms.ModelForm):
     class Meta:
         model = Services
         fields = ['service_name', 'details', 'price']
+        widgets = {
+            'service_name': forms.TextInput(attrs={'class': 'form-control'}),
+            'details': forms.Textarea(attrs={'class': 'form-control'}),
+            'price': forms.NumberInput(attrs={'class': 'form-control'}),
+        }
 
 class ReservationForm(forms.ModelForm):
     class Meta:

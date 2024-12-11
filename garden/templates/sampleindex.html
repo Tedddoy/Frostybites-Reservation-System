@@ -1,0 +1,77 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>FrostyBites Landing Page</title>
+  <link rel="stylesheet" href="{% static 'css/sample.css' %}">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Jost:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+  <!-- Header -->
+  <header>
+    <div class="logo">FROSTYBITES</div>
+    <nav class="nav-links">
+      <ul>
+        <li><a href="#">Home</a></li>
+        <li><a href="#services">Services</a></li>
+        <li><a href="#about">About</a></li>
+        <li><a href="#contact">Contact</a></li>
+        <li><a href="{% url 'login' %}">Login</a></li>
+      </ul>
+    </nav>
+  </header>
+
+  <!-- Hero Section -->
+  <section class="hero">
+    <h1 class="section-heading">A VENUE FOR YOUR DREAMS</h1>
+  </section>
+
+  <!-- Services Section -->
+  <section class="services" id="services">
+    <h2 class="lined-heading">Our Services</h2>
+  <div class="service-grid">
+    <div class="service-box">
+      <img src="{% static 'images/gardenhall1.jpg' %}" alt="Service 1">
+    </div>
+    <div class="service-box">
+      <img src="{% static 'images/gardenhall2.jpg' %}" alt="Service 2">
+    </div>
+    <div class="service-box">
+      <img src="{% static 'images/gardenhall4.jpg' %}" alt="Service 3">
+    </div>
+  </div>
+</section>
+
+  <!-- About Section -->
+  <section class="about" id="about">
+    <h2 class="lined-heading">About Us</h2>
+    <div class="about-grid">
+      <div class="about-box"></div>
+      <div class="about-box"></div>
+    </div>
+  </section>
+
+  <!-- Contact Section -->
+  <footer>
+    <div class="contact" id="contact">
+      <h2>Contact</h2>
+      <p>
+        <i class="icon-location"></i> Purdue St., Camague, Tubod, Iligan City, Iligan, Philippines<br>
+        <i class="icon-phone"></i> +63 0927 987 6791<br>
+        <i class="icon-email"></i> frostybites@gmail.com
+      </p>
+    </div>
+    <div class="footer-bottom">
+      <p>© FrostyBites All Right Reserved.</p>
+      <div class="social-icons">
+        <a href="#"><i class="icon-instagram"></i></a>
+        <a href="#"><i class="icon-twitter"></i></a>
+        <a href="#"><i class="icon-email"></i></a>
+      </div>
+    </div>
+  </footer>
+</body>
+</html>

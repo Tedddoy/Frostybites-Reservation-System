@@ -4,7 +4,6 @@ from django.http import HttpResponse, HttpResponseRedirect
 from django.template import loader
 from .models import *
 from django.urls import reverse
-from .models import Reservation
 from django.contrib.auth.decorators import login_required
 from .forms import ReservationForm
 from .forms import ServiceForm 
@@ -18,7 +17,7 @@ from django.contrib.auth import *
 
 def index(request):
     services = Services.objects.all()
-    return render(request, 'index.html', {'services': services})
+    return render(request, 'sampleindex.html', {'services': services})
 
 def register(request):
     msg = None
@@ -33,7 +32,7 @@ def register(request):
         
             user.save() 
             msg = 'User created successfully'
-            return redirect('login_view')  
+            return redirect('login')  
         else:
             msg = 'Form is not valid'
     else:
@@ -67,7 +66,7 @@ def logout_view(request):
     return redirect('index')
 
 def admin(request):
-    return render(request,'admin/admin.html')
+    return render(request,'admin/admin_dashboard.html')
 
 
 def customer(request, id):
@@ -106,7 +105,7 @@ def reservation_list(request):
     approved_reservations = all_reservations.filter(status='approved')
     declined_reservations = all_reservations.filter(status='declined')
 
-    template = loader.get_template('admin/reservation_list.html')
+    template = loader.get_template('admin/admin_reservation_list.html')
     context = {
         'all_reservations': all_reservations,
         'pending_reservations': pending_reservations,
@@ -160,13 +159,8 @@ def payment_form(request, id):
 
 
 def customers(request):
-    users = User.objects.all()
-    
-    context = {
-        'users': users,
-    }
-
-    return render(request, 'admin/customer_list.html', context)
+    customers = User.objects.filter(is_customer=True)  # Fetch all customers
+    return render(request, 'admin/admin_customerlist.html', {'customers': customers})
     
 
 def reserve_service(request, service_id):
@@ -212,12 +206,9 @@ def transactions(request):
     return HttpResponse(template.render(context, request))
 
 def services_list_admin(request):
-    service = Services.objects.all()
-    template = loader.get_template('admin/services.html')
-    context = {
-        'services' : service,
-    }
-    return HttpResponse(template.render(context, request))
+    services = Services.objects.all()  # Retrieve all services
+    form = ServiceForm()  # Initialize the form
+    return render(request, 'admin/admin_services_list.html', {'services': services, 'form': form})
 
     
 def update_status(request, id):
@@ -257,10 +248,10 @@ def add_service(request):
         form = ServiceForm(request.POST)
         if form.is_valid():
             form.save()
-            return HttpResponseRedirect('/services/')
-    else:
-        form = ServiceForm()
-    return render(request, 'admin/add_service.html', {'form': form})
+            return JsonResponse({'success': True, 'message': 'Service added successfully.'})
+        else:
+            return JsonResponse({'success': False, 'errors': form.errors}, status=400)
+    return JsonResponse({'success': False, 'message': 'Invalid request method.'}, status=405)
 
 def update_service(request, id):
     service = get_object_or_404(Services, id=id)
@@ -268,10 +259,18 @@ def update_service(request, id):
         form = ServiceForm(request.POST, instance=service)
         if form.is_valid():
             form.save()
-            return HttpResponseRedirect('/services/')  # Redirect to the services list page
-    else:
-        form = ServiceForm(instance=service)
-    return render(request, 'admin/update_service.html', {'form': form})
+            return JsonResponse({'success': True, 'message': 'Service updated successfully.'})
+        else:
+            print("Form Errors:", form.errors)  # Debugging: Log form errors
+            return JsonResponse({'success': False, 'errors': form.errors}, status=400)
+    return JsonResponse({'success': False, 'message': 'Invalid request method.'}, status=405)
+
+def delete_service(request, id):
+    service = get_object_or_404(Services, id=id)
+    if request.method == 'POST':
+        service.delete()
+        return JsonResponse({'success': True, 'message': 'Service deleted successfully.'})
+    return JsonResponse({'success': False, 'message': 'Invalid request method.'}, status=405)
 
 def report_list_admin(request):
     # Fetch counts
@@ -328,12 +327,6 @@ def report_list_admin(request):
     }
     return render(request, 'admin/reports.html', context)
 
-def delete_service(request, id):
-    service = get_object_or_404(Services, id=id)
-    if request.method == 'POST':
-        service.delete()
-        return redirect('/services/')  # Redirect to the services list page
-    return render(request, 'admin/delete_service.html', {'service': service})
 
 def todos1(request, id):    
     if request.method == 'POST':

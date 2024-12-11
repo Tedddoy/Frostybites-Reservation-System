@@ -1,0 +1,265 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+  }
+  
+  html {
+    scroll-behavior: smooth;
+  }
+
+  body {
+    font-family: Arial, sans-serif;
+    color: #333;
+    background-color: #f9f9f9;
+    line-height: 1.6;
+  }
+  
+  /* Header */
+  header {
+    display: flex;
+    justify-content: space-between; /* Ensures space between logo and nav-links */
+    align-items: center;
+    padding: 20px 10%;
+    background-color: #fff;
+    border-bottom: 1px solid #ddd;
+  }
+  
+  .logo {
+    font-size: 1.5rem;
+    font-weight: bold;
+    font-family: 'Jost', sans-serif;
+  }
+  
+  nav ul {
+    display: flex;
+    gap: 20px;
+    list-style: none;
+  }
+  
+  nav ul li a {
+    text-decoration: none;
+    color: #333;
+    font-weight: 500;
+    padding: 5px;
+    transition: color 0.3s;
+    
+  }
+  
+  nav ul li a:hover {
+    color: #007bff;
+  }
+  
+  /* Hero Section */
+  .hero {
+    text-align: center;
+    padding: 80px 10%;
+    background-color: #e9e9e9;
+    height: 40vh;
+  }
+  
+  .hero h1 {
+    font-size: 2.5rem;
+    font-weight: 300;
+    margin-bottom: 20px;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    font-family: "Playfair Display", serif;
+  }
+  
+  .section-heading {
+    top: 50px;
+    position: relative;
+  }
+  .section-heading::after {
+    content: '';
+    display: block;
+    width: 700px; /* Adjust the width of the line */
+    height: 1px; /* Adjust the thickness of the line */
+    background-color: #333; /* Line color */
+    margin: 10px auto 0; /* Center and add spacing */
+  }
+  
+  /* Services Section */
+  .services {
+    text-align: center;
+    padding: 60px 10%;
+  }
+  
+  .services h2 {
+    font-size: 2rem;
+    margin-bottom: 40px;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    font-family: "Playfair Display", serif;
+    font-weight: 300;
+  }
+  
+  .service-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 20px;
+  }
+  
+  .service-box {
+    background-color: #ffffff;
+    height: 600px; /* Adjust the height as needed */
+    border-radius: 10px;
+    overflow: hidden;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+  
+  .service-box img {
+    width: 100%; /* Ensures the image fits the width of the box */
+    height: 100%; /* Ensures the image fits the height of the box */
+    object-fit: cover; /* Crops the image to fill the box without distortion */
+    border-radius: 10px; /* Matches the border radius of the box */
+  }
+  
+  /* About Section */
+  .about {
+    text-align: center;
+    padding: 60px 10%;
+    font-family: "Playfair Display", serif;
+  }
+  
+  .about h2 {
+    font-size: 2rem;
+    margin-bottom: 40px;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    font-weight: 300;
+  }
+  
+  .about-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 20px;
+  }
+  
+  .about-box {
+    background-color: #eaeaea;
+    height: 150px;
+    border-radius: 10px;
+  }
+  
+  /* Footer Section */
+  footer {
+    background-color: #fdfdfd;
+    padding: 40px 10%;
+    text-align: center;
+  }
+  
+  .contact h2 {
+    font-size: 1.5rem;
+    margin-bottom: 20px;
+  }
+  
+  .contact p {
+    font-size: 1rem;
+    line-height: 1.8;
+  }
+  
+  .icon-location, .icon-phone, .icon-email {
+    font-style: normal;
+    margin-right: 10px;
+  }
+  
+  .footer-bottom {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 20px;
+    font-size: 0.9rem;
+  }
+  
+  .footer-bottom p {
+    color: #777;
+  }
+  
+  .social-icons {
+    display: flex;
+    gap: 15px;
+  }
+  
+  .social-icons a {
+    color: #333;
+    font-size: 1.2rem;
+    text-decoration: none;
+    transition: color 0.3s;
+  }
+  
+  .social-icons a:hover {
+    color: #007bff;
+  }
+
+  .nav-links {
+    flex-grow: 1; /* Makes the navigation links stretch */
+    display: flex;
+    justify-content: right; /* Centers the nav-links horizontally */
+    font-family: "Playfair Display", serif;
+  }
+  
+  .nav-links ul {
+    display: flex;
+    list-style: none;
+    gap: 20px;
+    margin: 0;
+    
+  }
+
+  .nav-links ul li a {
+    text-decoration: none; /* Optionally remove default underline */
+    color: #333;
+    font-weight: 500;
+    position: relative;
+    font-size: 20px;
+  }
+
+  /* Hover effect underline */
+  .nav-links ul li a::after {
+    content: '';
+    position: absolute;
+    bottom: -2px;
+    left: 0;
+    width: 0;
+    height: 2px;
+    background-color: #333;
+    transition: width 0.3s ease;
+  }
+
+  .nav-links ul li a:hover::after {
+    width: 100%;
+  }
+
+  .lined-heading {
+    font-size: 2rem;
+    font-family: "Playfair Display", serif;
+    font-weight: 300;
+    position: relative;
+    display: inline-block;
+    text-transform: uppercase;
+    margin-bottom: 40px;
+  }
+  
+  .lined-heading::before,
+  .lined-heading::after {
+    content: '';
+    position: absolute;
+    top: 50%;
+    width: 50px; /* Adjust the line width */
+    height: 2px; /* Line thickness */
+    background-color: #333;
+  }
+  
+  .lined-heading::before {
+    left: -60px; /* Adjust the distance from the text */
+  }
+  
+  .lined-heading::after {
+    right: -60px; /* Adjust the distance from the text */
+  }
+
+  

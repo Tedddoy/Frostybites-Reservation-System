@@ -1,0 +1,53 @@
+{% load static %}
+<section id="sidebar">
+    <a href="#" class="brand">
+        <i class='bx bxs-smile'></i>
+        <span class="text">FrostyBites</span>
+    </a>
+    <ul class="side-menu top">
+        <li class="{% if request.path == '/adminpage/' %}active{% endif %}">
+            <a href="{% url 'adminpage' %}">
+                <i class='bx bxs-dashboard'></i>
+                <span class="text">Dashboard</span>
+            </a>
+        </li>
+        <li class="{% if request.path == '/customers/' %}active{% endif %}">
+            <a href="{% url 'customers' %}">
+                <i class='bx bxs-group'></i>
+                <span class="text">Customers</span>
+            </a>
+        </li>
+        <li class="{% if request.path == '/services/' %}active{% endif %}">
+            <a href="{% url 'services_list_admin' %}">
+                <i class='bx bxs-doughnut-chart'></i>
+                <span class="text">Services</span>
+            </a>
+        </li>
+        <li class="{% if request.path == '/reservation_list/' %}active{% endif %}">
+            <a href="{% url 'reservation_list' %}">
+                <i class='bx bxs-envelope'></i>
+                <span class="text">Reservation List</span>
+            </a>
+        </li>
+        <li class="{% if request.path == '/team/' %}active{% endif %}">
+            <a href="">
+                <i class='bx bxs-group'></i>
+                <span class="text">Team</span>
+            </a>
+        </li>
+    </ul>
+    <ul class="side-menu">
+        <li class="{% if request.path == '/settings/' %}active{% endif %}">
+            <a href="">
+                <i class='bx bxs-cog'></i>
+                <span class="text">Settings</span>
+            </a>
+        </li>
+        <li>
+            <a href="{% url 'logout' %}" class="logout">
+                <i class='bx bxs-log-out-circle'></i>
+                <span class="text">Logout</span>
+            </a>
+        </li>
+    </ul>
+</section>
